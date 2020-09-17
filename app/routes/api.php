@@ -15,4 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('message', MessageController::class);
+Route::group(['middleware' => 'response.format'], function(){
+    Route::resource('message', MessageController::class);
+});
