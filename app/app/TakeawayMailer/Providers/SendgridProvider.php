@@ -10,7 +10,7 @@ class SendgridProvider extends Provider
     public function send(Message $message)
     {
         $email = new \SendGrid\Mail\Mail();
-        $email->setFrom("TODO", "TODO");
+        $email->setFrom("ehwas503@gmail.com", "Nikolai");
         $email->setSubject($message->subject);
 
         foreach($message->to as $k => $v)
@@ -24,13 +24,13 @@ class SendgridProvider extends Provider
         $email->addContent("text/plain", $message->body_text);
         $email->addContent("text/html", $message->body);
         $sendgrid = new \SendGrid(config('mail_providers.SENDGRID_API_KEY'));
-        try {
-            $response = $sendgrid->send($email);
-            print $response->statusCode() . "\n";
-            print_r($response->headers());
-            print $response->body() . "\n";
-        } catch (\Exception $e) {
-            echo 'Caught exception: '. $e->getMessage() ."\n";
+
+        $response = $sendgrid->send($email);
+        $response = json_decode($response->body(), 1);
+
+        if(isset($response['errors']))
+        {
+            throw new \Exception($response['errors'][0]['message']);
         }
     }
 }

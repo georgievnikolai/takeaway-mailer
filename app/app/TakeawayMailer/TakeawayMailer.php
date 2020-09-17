@@ -2,6 +2,7 @@
 
 namespace App\TakeawayMailer;
 
+use App\Jobs\ProcessTakeawayMailerQueue;
 use App\TakeawayMailer\Message;
 use App\TakeawayMailer\Providers\SendgridProvider;
 use App\TakeawayMailer\Providers\MailjetProvider;
@@ -19,7 +20,8 @@ class TakeawayMailer
 
     public static function trySend(Message $message, int $retry)
     {
-        return new self($message, $retry);
+        $mailer = new self($message, $retry);
+        $mailer->send();
     }
 
     public function send()
@@ -29,6 +31,6 @@ class TakeawayMailer
 
     public static function queue(Message $message)
     {
-        // add message to queue for sending
+        ProcessTakeawayMailerQueue::dispatch($message);
     }
 }

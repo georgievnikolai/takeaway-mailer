@@ -40,5 +40,12 @@ class MailjetProvider extends Provider
         ];
 
         $response = $client->post(\Mailjet\Resources::$Email, ['body' => $request_body]);
+
+        if($response->success())
+        {
+            return true;
+        }
+
+        throw new \Exception("Sending failed");
     }
 }
