@@ -26,11 +26,18 @@ class SendgridProvider extends Provider
         $sendgrid = new \SendGrid(config('mail_providers.SENDGRID_API_KEY'));
 
         $response = $sendgrid->send($email);
-        $response = json_decode($response->body(), 1);
+        $response_data = json_decode($response->body(), 1);
 
-        if(isset($response['errors']))
+        if(in_array($response->statusCode(), [200, 201, 202]))
         {
-            throw new \Exception($response['errors'][0]['message']);
+            return true;
         }
+        
+        if(isset($response_data['errors']))
+        {
+            throw new \Exception($response_data['errors'][0]['message']);
+        }
+
+        throw new \Exception("Sending failed");
     }
 }
