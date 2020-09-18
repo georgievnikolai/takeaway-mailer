@@ -8,7 +8,7 @@ use App\TakeawayMailer\Providers\SendgridProvider;
 class ProviderFactory
 {
 
-    private static $available_providers = [
+    public static $available_providers = [
         SendgridProvider::class,
         MailjetProvider::class,
     ];  
