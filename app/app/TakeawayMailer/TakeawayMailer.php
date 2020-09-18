@@ -19,7 +19,7 @@ class TakeawayMailer
 
     public static function trySend(Message $message, int $retry)
     {
-        Log::info("{$retry} attempt to send message {$message->id}");
+        Log::info("{$retry} attempt to send message {$message->id} (reference_id: {$message->reference_id})");
         $mailer = new self($message, $retry);
         $mailer->send();
     }
@@ -27,12 +27,12 @@ class TakeawayMailer
     public function send()
     {
         $this->provider->send($this->message);
-        Log::info("Message {$this->message->id} sent through {$this->provider}");
+        Log::info("Message {$this->message->id} sent through {$this->provider} (reference_id: {$this->message->reference_id})");
     }
 
     public static function queue(Message $message)
     {
         ProcessTakeawayMailerQueue::dispatch($message);
-        Log::info("Message {$message->id} queued for sending");
+        Log::info("Message {$message->id} (reference_id: {$message->reference_id}) queued for sending");
     }
 }
