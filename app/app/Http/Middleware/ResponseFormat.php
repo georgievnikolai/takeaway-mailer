@@ -36,6 +36,11 @@ class ResponseFormat
             $response['success'] = false;
             $response['errors'][] = $e->getMessage();
         }
+        catch(\Error $e)
+        {
+            $response['success'] = false;
+            $response['errors'][] = $e->getMessage();            
+        }
 
         $response = json_encode($response);
         
