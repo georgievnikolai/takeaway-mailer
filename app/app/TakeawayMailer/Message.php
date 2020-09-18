@@ -16,7 +16,7 @@ class Message
     public $body_text;
     public $to;
 
-    public function __construct($subject, $body, $to, $reference_id = null)
+    public function __construct(string $subject, string $body, array $to, string $reference_id = null)
     {
         $this->id = Str::uuid()->toString();
         $this->subject = $subject;
@@ -25,6 +25,24 @@ class Message
         $this->to = $to;
         $this->reference_id = $reference_id;
         Log::info("Message {$this->id} (reference_id: {$this->reference_id}) created");
+    }
+
+    public static function initFromCommandArguments(array $arguments)
+    {
+        $validator = Validator::make($arguments, [
+            'subject' => "required",
+            'body' => "required",
+            'to' => "required|email",
+        ]);
+
+        if($validator->fails())
+        {
+            throw new \Exception($validator->errors());
+        }
+
+        $arguments['reference_id'] = $arguments['reference_id'] ?? null;
+
+        return new self($arguments['subject'], $arguments['body'], [$arguments['to']], $arguments['reference_id']);
     }
 
     public static function initFromRequest(Request $request)

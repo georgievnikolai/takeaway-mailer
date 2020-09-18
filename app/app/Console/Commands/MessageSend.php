@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\TakeawayMailer\Message;
+use App\TakeawayMailer\TakeawayMailer;
 use Illuminate\Console\Command;
 
 class MessageSend extends Command
@@ -11,7 +13,7 @@ class MessageSend extends Command
      *
      * @var string
      */
-    protected $signature = 'message:send';
+    protected $signature = 'message:send {subject} {body} {to} {reference_id=?}';
 
     /**
      * The console command description.
@@ -37,6 +39,18 @@ class MessageSend extends Command
      */
     public function handle()
     {
+        try
+        {
+            $message = Message::initFromCommandArguments($this->arguments());
+            TakeawayMailer::queue($message);
+            $this->info("Message added to queue");
+        }
+        catch(\Exception $e)
+        {
+            $this->error($e->getMessage());
+            return -1;
+        }
+        
         return 0;
     }
 }
