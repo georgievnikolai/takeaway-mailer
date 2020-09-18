@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\TakeawayMailer\TakeawayMailer;
+use App\TakeawayMailer\Message;
 
 class MessageController extends Controller
 {
@@ -11,10 +13,10 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+//    public function index(Request $request)
+//   {
+//
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -24,7 +26,9 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $message = Message::initFromRequest($request);
+        TakeawayMailer::queue($message);
+        return;
     }
 
     /**
@@ -33,10 +37,10 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+ //   public function show($id)
+//    {
         //
-    }
+//    }
 
     /**
      * Update the specified resource in storage.
@@ -45,10 +49,10 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+//    public function update(Request $request, $id)
+//    {
         //
-    }
+//    }
 
     /**
      * Remove the specified resource from storage.
