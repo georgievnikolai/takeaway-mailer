@@ -46,8 +46,8 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => '',
-            'host' => '127.0.0.1',
-            'port' => '33066',
+            'host' => 'db_0',
+            'port' => '3306',
             'database' => 'takeawaymailer',
             'username' => 'root',
             'password' => '16783b3dc9fc',
