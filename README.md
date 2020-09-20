@@ -64,7 +64,7 @@ To run the whole thing:
 
 ```
 # clone the repo
-git clone xxxxxxxxx
+git clone https://gitlab.com/nikolaygeorgiev/takeaway-mailer.git
 
 # create a docker network
 docker network create takeaway_mailer_network_0
