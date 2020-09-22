@@ -64,7 +64,7 @@ To run the whole thing:
 
 ```
 # clone the repo
-git clone https://gitlab.com/nikolaygeorgiev/takeaway-mailer.git
+git clone https://gitlab.com/nikolaygeorgiev/takeaway-mailer.git && cd takeaway-mailer
 
 # create a docker network
 docker network create takeaway_mailer_network_0
@@ -76,10 +76,10 @@ docker run --network takeaway_mailer_network_0 --name db_0 -e MYSQL_ROOT_PASSWOR
 docker build -t takeawaymailer/app -f ./app.Dockerfile .
 
 # start an api server container 
-docker run -dit -p 127.0.0.1:8000:8000 --name api --network takeaway_mailer_network_0 --entrypoint "/bin/bash" takeawaymailer/app -c "php artisan migrate && php artisan serve --host=0.0.0.0"
+docker run -dit -p 127.0.0.1:8000:8000 --name api --network takeaway_mailer_network_0 --entrypoint "/bin/bash" takeawaymailer/app -c "php artisan migrate --force && php artisan serve --host=0.0.0.0"
 
 # start a queue worker container
-docker run -dit --name worker0 --network takeaway_mailer_network_0 --entrypoint "/bin/bash" takeawaymailer/app -c "php artisan migrate && php artisan queue:work"
+docker run -dit --name worker0 --network takeaway_mailer_network_0 --entrypoint "/bin/bash" takeawaymailer/app -c "php artisan queue:work"
 ```
 
 ### Sending a message
